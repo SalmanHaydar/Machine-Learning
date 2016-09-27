@@ -23,7 +23,7 @@ def derivative(theta,x,y,j):
     gr = res/len(x)
     return gr
 
-def gradient_algorithm(x,y,alpha=0.001,ep=0.01,max_iter=100000):
+def gradient_algorithm(x,y,alpha=1,ep=0.01,max_iter=100000):
     theta = np.ones(len(x[0]))
     temp = np.zeros(len(x[0]))
 
@@ -45,7 +45,6 @@ def gradient_algorithm(x,y,alpha=0.001,ep=0.01,max_iter=100000):
 
         jit.append(it)
         jval.append(jj)
-
         e = cost(theta,x,y)
         if abs(jj-e)<=ep:
             print("converged at iteration: ")
@@ -68,18 +67,20 @@ if __name__=="__main__":
     y = y.reshape(len(y),1)
     x = x.astype(float)
     y = y.astype(float)
-    print(x)
-    print(y)
     for j in range(1,len(x[0])):
         for i in range(len(x)):
             x[i,j]=(x[i,j]-np.average(x[:,j]))/(np.max(x,0)[j]-np.min(x,0)[j])
+
     th=[]
     jit=[]
     jval=[]
+    
     th,jit,jval=gradient_algorithm(x,y)
-    print(th)
-    plt.plot(jit,jval)
+    
+    plt.plot(jit[0:100],jval[0:100])
     plt.xlabel("Iteration")
     plt.ylabel("Cost")
     plt.title("Cost VS Iteration")
     plt.show()
+    print("Theta :")
+    print(th)
